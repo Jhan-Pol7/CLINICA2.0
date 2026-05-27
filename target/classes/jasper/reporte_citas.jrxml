@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="reporte_citas" language="java" pageWidth="842" pageHeight="595"
+              orientation="Landscape" columnWidth="802"
+              leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+
+    <parameter name="fechaIni"       class="java.sql.Date"/>
+    <parameter name="fechaFin"       class="java.sql.Date"/>
+    <parameter name="idEspecialidad" class="java.lang.Long"/>
+    <parameter name="idMedico"       class="java.lang.Long"/>
+    <parameter name="estado"         class="java.lang.String"/>
+
+    <queryString language="SQL">
+        <![CDATA[
+            SELECT c.id_cita, c.num_ticket, c.fecha, c.hora, c.estado, c.tipo_atencion, c.motivo,
+                   p.dni  AS p_dni,
+                   p.nombres || ' ' || p.apellidos AS paciente,
+                   m.nombres || ' ' || m.apellidos AS medico,
+                   e.nombre AS especialidad
+            FROM upeu_cita c
+            JOIN upeu_paciente     p ON c.id_paciente     = p.id_paciente
+            JOIN upeu_medico       m ON c.id_medico       = m.id_medico
+            JOIN upeu_especialidad e ON c.id_especialidad = e.id_especialidad
+            WHERE ($P{fechaIni}       IS NULL OR c.fecha           >= $P{fechaIni})
+              AND ($P{fechaFin}       IS NULL OR c.fecha           <= $P{fechaFin})
+              AND ($P{idEspecialidad} IS NULL OR c.id_especialidad = $P{idEspecialidad})
+              AND ($P{idMedico}       IS NULL OR c.id_medico       = $P{idMedico})
+              AND ($P{estado}         IS NULL OR c.estado          = $P{estado})
+            ORDER BY c.fecha DESC, c.hora ASC
+        ]]>
+    </queryString>
+
+    <field name="id_cita"        class="java.lang.Long"/>
+    <field name="num_ticket"     class="java.lang.String"/>
+    <field name="fecha"          class="java.sql.Date"/>
+    <field name="hora"           class="java.sql.Time"/>
+    <field name="estado"         class="java.lang.String"/>
+    <field name="tipo_atencion"  class="java.lang.String"/>
+    <field name="motivo"         class="java.lang.String"/>
+    <field name="p_dni"          class="java.lang.String"/>
+    <field name="paciente"       class="java.lang.String"/>
+    <field name="medico"         class="java.lang.String"/>
+    <field name="especialidad"   class="java.lang.String"/>
+
+    <title>
+        <band height="60" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="0" width="802" height="22"/>
+                <textElement textAlignment="Center"><font size="16" isBold="true"/></textElement>
+                <text><![CDATA[Reporte de Citas — Clínica Más Cerca de Dios]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="0" y="26" width="802" height="14"/>
+                <textElement textAlignment="Center"><font size="10"/></textElement>
+                <textFieldExpression><![CDATA[
+                    "Filtros — Desde: " + ($P{fechaIni} == null ? "*" : $P{fechaIni}.toString())
+                    + "  Hasta: " + ($P{fechaFin} == null ? "*" : $P{fechaFin}.toString())
+                    + "  Especialidad: " + ($P{idEspecialidad} == null ? "todas" : $P{idEspecialidad})
+                    + "  Médico: "      + ($P{idMedico}       == null ? "todos"  : $P{idMedico})
+                    + "  Estado: "      + ($P{estado}         == null ? "todos"  : $P{estado})
+                ]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="0" y="42" width="802" height="14"/>
+                <textElement textAlignment="Right"><font size="9" isItalic="true"/></textElement>
+                <textFieldExpression><![CDATA["Generado: " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date())]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <columnHeader>
+        <band height="24" splitType="Stretch">
+            <line>
+                <reportElement x="0" y="0" width="802" height="1"/>
+            </line>
+            <staticText><reportElement x="0"   y="4" width="90"  height="16"/><textElement><font size="10" isBold="true"/></textElement><text><![CDATA[Ticket]]></text></staticText>
+            <staticText><reportElement x="90"  y="4" width="70"  height="16"/><textElement><font size="10" isBold="true"/></textElement><text><![CDATA[Fecha]]></text></staticText>
+            <staticText><reportElement x="160" y="4" width="50"  height="16"/><textElement><font size="10" isBold="true"/></textElement><text><![CDATA[Hora]]></text></staticText>
+            <staticText><reportElement x="210" y="4" width="170" height="16"/><textElement><font size="10" isBold="true"/></textElement><text><![CDATA[Paciente]]></text></staticText>
+            <staticText><reportElement x="380" y="4" width="70"  height="16"/><textElement><font size="10" isBold="true"/></textElement><text><![CDATA[DNI]]></text></staticText>
+            <staticText><reportElement x="450" y="4" width="160" height="16"/><textElement><font size="10" isBold="true"/></textElement><text><![CDATA[Médico]]></text></staticText>
+            <staticText><reportElement x="610" y="4" width="100" height="16"/><textElement><font size="10" isBold="true"/></textElement><text><![CDATA[Especialidad]]></text></staticText>
+            <staticText><reportElement x="710" y="4" width="92"  height="16"/><textElement><font size="10" isBold="true"/></textElement><text><![CDATA[Estado]]></text></staticText>
+            <line>
+                <reportElement x="0" y="22" width="802" height="1"/>
+            </line>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="18" splitType="Stretch">
+            <textField><reportElement x="0"   y="2" width="90"  height="14"/><textElement><font size="9"/></textElement><textFieldExpression><![CDATA[$F{num_ticket}]]></textFieldExpression></textField>
+            <textField><reportElement x="90"  y="2" width="70"  height="14"/><textElement><font size="9"/></textElement><textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression></textField>
+            <textField><reportElement x="160" y="2" width="50"  height="14"/><textElement><font size="9"/></textElement><textFieldExpression><![CDATA[$F{hora}]]></textFieldExpression></textField>
+            <textField isStretchWithOverflow="true"><reportElement x="210" y="2" width="170" height="14"/><textElement><font size="9"/></textElement><textFieldExpression><![CDATA[$F{paciente}]]></textFieldExpression></textField>
+            <textField><reportElement x="380" y="2" width="70"  height="14"/><textElement><font size="9"/></textElement><textFieldExpression><![CDATA[$F{p_dni}]]></textFieldExpression></textField>
+            <textField isStretchWithOverflow="true"><reportElement x="450" y="2" width="160" height="14"/><textElement><font size="9"/></textElement><textFieldExpression><![CDATA[$F{medico}]]></textFieldExpression></textField>
+            <textField><reportElement x="610" y="2" width="100" height="14"/><textElement><font size="9"/></textElement><textFieldExpression><![CDATA[$F{especialidad}]]></textFieldExpression></textField>
+            <textField><reportElement x="710" y="2" width="92"  height="14"/><textElement><font size="9"/></textElement><textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression></textField>
+        </band>
+    </detail>
+
+    <pageFooter>
+        <band height="20" splitType="Stretch">
+            <textField evaluationTime="Report" pattern="#,##0">
+                <reportElement x="0" y="2" width="200" height="14"/>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA["Total citas: " + $V{REPORT_COUNT}]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Now">
+                <reportElement x="600" y="2" width="202" height="14"/>
+                <textElement textAlignment="Right"><font size="9"/></textElement>
+                <textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+</jasperReport>
