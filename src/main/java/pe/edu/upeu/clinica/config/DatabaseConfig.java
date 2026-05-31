@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -143,7 +144,7 @@ public class DatabaseConfig {
                 System.err.println("[DDL] Script '" + scriptName + "' NO ENCONTRADO en classpath — se omite");
                 return;
             }
-            String sql = new String(is.readAllBytes());
+            String sql = new String(is.readAllBytes(), StandardCharsets.UTF_8);
             String[] statements = sql.split(";");
             System.out.println("[DDL] Sentencias detectadas: " + statements.length);
 

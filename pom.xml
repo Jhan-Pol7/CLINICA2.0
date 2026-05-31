@@ -162,6 +162,10 @@
         <version>0.0.8</version>
         <configuration>
           <mainClass>pe.edu.upeu.clinica.App</mainClass>
+          <jvmArgs>
+            <jvmArg>-Dfile.encoding=UTF-8</jvmArg>
+            <jvmArg>-Dstdout.encoding=UTF-8</jvmArg>
+          </jvmArgs>
         </configuration>
       </plugin>
       <plugin>

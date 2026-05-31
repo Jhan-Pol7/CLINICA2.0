@@ -11,11 +11,17 @@ import javafx.stage.Window;
 
 import java.util.stream.Stream;
 
+// Añade búsqueda incremental a cualquier ComboBox<T> existente.
+// Al escribir letras con el combo abierto, filtra los ítems en tiempo real
+// (contains, case-insensitive) y muestra un Tooltip con el texto ingresado.
+// BACKSPACE borra el último carácter del filtro; ESC lo limpia por completo.
+// Al cerrar el combo se restaura la lista original sin perder la selección.
 public class ComboBoxAutoComplete<T> {
     private final ComboBox<T> cmb;
-    private String filter = "";
-    private final ObservableList<T> originalItems;
+    private String filter = "";               // texto acumulado tecla a tecla
+    private final ObservableList<T> originalItems; // copia de los ítems originales
 
+    // Guarda los ítems originales y registra los listeners de teclado y cierre.
     public ComboBoxAutoComplete(ComboBox<T> cmb) {
         this.cmb = cmb;
         originalItems = FXCollections.observableArrayList(cmb.getItems());
@@ -24,6 +30,10 @@ public class ComboBoxAutoComplete<T> {
         cmb.setOnHidden(this::handleOnHiding);
     }
 
+    // Actualiza el filtro según la tecla pulsada y reconstruye la lista visible.
+    //   - Letra    → agrega al filtro y filtra la lista.
+    //   - BACKSPACE → elimina el último carácter del filtro y recalcula.
+    //   - ESCAPE   → limpia el filtro por completo.
     public void handleOnKeyPressed(KeyEvent e) {
         ObservableList<T> filteredList = FXCollections.observableArrayList();
         KeyCode code = e.getCode();
@@ -34,12 +44,15 @@ public class ComboBoxAutoComplete<T> {
         }
         if (code == KeyCode.ESCAPE) filter = "";
         if (filter.length() == 0) {
+            // Sin filtro: mostrar todos los ítems y ocultar el tooltip.
             filteredList = originalItems;
             cmb.getTooltip().hide();
         } else {
+            // Con filtro: conservar solo los que contienen el texto.
             Stream<T> itens = cmb.getItems().stream();
             String txtUsr = filter.toLowerCase();
             itens.filter(el -> el.toString().toLowerCase().contains(txtUsr)).forEach(filteredList::add);
+            // Mostrar el texto del filtro en el tooltip junto al combo.
             cmb.getTooltip().setText(txtUsr);
             Window stage = cmb.getScene().getWindow();
             double posX = stage.getX() + cmb.getBoundsInParent().getMinX();
@@ -50,6 +63,8 @@ public class ComboBoxAutoComplete<T> {
         cmb.getItems().setAll(filteredList);
     }
 
+    // Al cerrar el combo: limpia el filtro, oculta el tooltip y restaura
+    // la lista original manteniendo el ítem que estaba seleccionado.
     public void handleOnHiding(Event e) {
         filter = "";
         cmb.getTooltip().hide();

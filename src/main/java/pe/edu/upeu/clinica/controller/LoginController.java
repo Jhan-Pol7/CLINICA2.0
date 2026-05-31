@@ -91,10 +91,6 @@ public class LoginController {
             Rectangle2D bounds = screen.getBounds();
             Scene mainScene = new Scene(mainRoot, bounds.getWidth(), bounds.getHeight() - 30);
 
-            // Aplicar CSS por defecto (si existe).
-            URL css = getClass().getResource("/css/styles.css");
-            if (css != null) mainScene.getStylesheets().add(css.toExternalForm());
-
             // Reusar el mismo Stage en vez de abrir uno nuevo.
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             URL icon = getClass().getResource("/img/logo_clinica.png");

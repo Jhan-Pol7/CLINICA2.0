@@ -18,6 +18,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.net.URL;
 import pe.edu.upeu.clinica.config.AppContext;
 import pe.edu.upeu.clinica.dto.MenuMenuItenTO;
 import pe.edu.upeu.clinica.dto.SessionManager;
@@ -25,15 +26,14 @@ import pe.edu.upeu.clinica.service.IMenuMenuItemDao;
 import pe.edu.upeu.clinica.utils.UtilsX;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.prefs.Preferences;
 
 // Controlador de la ventana principal. Pinta dinámicamente el MenuBar según
-// el perfil del usuario logueado, expone selectores para cambiar idioma y
-// estilo CSS en vivo, y abre cada vista del proyecto en un Tab del TabPane.
+// el perfil del usuario logueado, expone selector de idioma y abre cada
+// vista del proyecto en un Tab del TabPane.
 public class MainGuiController {
 
     // Servicio que arma la matriz de accesos por perfil.
@@ -54,13 +54,6 @@ public class MainGuiController {
     private List<MenuMenuItenTO> lista;   // items autorizados del perfil actual
     private Parent parent;                // cache temporal usada al redireccionar
     private Stage stage;                  // referencia al Stage actual
-
-    // Menú "Cambiar Estilo" con ComboBox embebido para los 5 temas CSS.
-    private final Menu menuEstilo = new Menu("Cambiar Estilo");
-    private final ComboBox<String> comboBox = new ComboBox<>(
-            javafx.collections.FXCollections.observableArrayList(
-                    "Estilo por Defecto", "Estilo Oscuro", "Estilo Azul", "Estilo Verde", "Estilo Rosado"));
-    private final CustomMenuItem customItem = new CustomMenuItem(comboBox);
 
     // Menú "Idioma" con ComboBox para es/en.
     private final Menu menuIdioma = new Menu("Idioma");
@@ -152,13 +145,6 @@ public class MainGuiController {
             }
         }
 
-        // Menú extra "Cambiar Estilo" (no depende del perfil — todos lo ven).
-        comboBox.setOnAction(e -> cambiarEstilo());
-        customItem.setHideOnClick(false);          // el ComboBox permanece abierto al seleccionar
-        menuEstilo.getItems().clear();
-        menuEstilo.getItems().add(customItem);
-        menuBarFx.getMenus().addAll(menuEstilo);
-
         // Menú extra "Idioma".
         comboBoxIdioma.setOnAction(e -> cambiarIdioma());
         customItemIdioma.setHideOnClick(false);
@@ -178,24 +164,6 @@ public class MainGuiController {
             default:        userPrefs.put("IDIOMAX", "es");
         }
         graficarMenus();
-    }
-
-    // Cambia el stylesheet de la Scene activa al vuelo.
-    private void cambiarEstilo() {
-        String estiloSeleccionado = comboBox.getSelectionModel().getSelectedItem();
-        Scene escena = bp.getScene();
-        if (escena == null) return;
-        escena.getStylesheets().clear();
-        String css;
-        switch (estiloSeleccionado == null ? "" : estiloSeleccionado) {
-            case "Estilo Oscuro": css = "/css/estilo-oscuro.css"; break;
-            case "Estilo Azul":   css = "/css/estilo-azul.css";   break;
-            case "Estilo Verde":  css = "/css/estilo-verde.css";  break;
-            case "Estilo Rosado": css = "/css/estilo-rosado.css"; break;
-            default:              css = "/css/styles.css";        // "Estilo por Defecto"
-        }
-        URL url = getClass().getResource(css);
-        if (url != null) escena.getStylesheets().add(url.toExternalForm());
     }
 
     // Listener interno que decide qué hacer al hacer click en un MenuItem.
