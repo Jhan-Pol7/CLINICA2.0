@@ -97,7 +97,7 @@
    </TitledPane>
 
    <HBox spacing="8.0">
-      <Button onAction="#onRegistrarCita" styleClass="button, edit-button" text="Registrar Cita"/>
+      <Button onAction="#onRegistrarCita" style="-fx-background-color: #27AE60; -fx-text-fill: white; -fx-font-weight: bold;" text="Registrar Cita"/>
       <Button onAction="#onLimpiar"  text="Limpiar"/>
       <Button onAction="#onRecargar" text="Recargar"/>
    </HBox>

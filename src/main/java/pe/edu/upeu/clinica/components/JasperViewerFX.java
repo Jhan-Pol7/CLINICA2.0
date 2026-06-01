@@ -56,7 +56,7 @@ public class JasperViewerFX extends Dialog<Void> {
     private int reportPages = 0;
 
     public JasperViewerFX() {
-        initModality(Modality.WINDOW_MODAL);
+        initModality(Modality.APPLICATION_MODAL);
         setResizable(true);
 
         dialogPane = getDialogPane();

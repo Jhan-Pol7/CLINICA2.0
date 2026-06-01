@@ -70,7 +70,7 @@
    </TitledPane>
 
    <HBox spacing="8.0">
-      <Button onAction="#onGuardarTriaje" styleClass="button, edit-button" text="Guardar Triaje"/>
+      <Button onAction="#onGuardarTriaje" style="-fx-background-color: #27AE60; -fx-text-fill: white; -fx-font-weight: bold;" text="Guardar Triaje"/>
       <Button onAction="#onLimpiar" text="Limpiar"/>
    </HBox>
 </VBox>

@@ -37,7 +37,7 @@
    <HBox spacing="8.0">
       <Button onAction="#onRecargar"     text="Recargar"/>
       <Button onAction="#onCopiar"       text="Copiar receta"/>
-      <Button onAction="#onVisorJasper"  styleClass="button, edit-button" text="Visor Jasper"/>
+      <Button onAction="#onVisorJasper"  style="-fx-background-color: #2980B9; -fx-text-fill: white; -fx-font-weight: bold;" text="Visor Jasper"/>
       <Button onAction="#onExportarPdf"  text="Exportar PDF"/>
    </HBox>
 </VBox>

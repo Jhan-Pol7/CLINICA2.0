@@ -41,6 +41,7 @@ public class MenuMenuItemDaoImp implements IMenuMenuItemDao {
         String miTicket   = prop(idioma, "menuitem.nombre.ticket",    "Imprimir Ticket");
         String mReporte   = prop(idioma, "menu.nombre.reporte",       "Reportes");
         String miReporte  = prop(idioma, "menuitem.nombre.reporte",   "Citas");
+        String miReceta   = prop(idioma, "menuitem.nombre.receta",    "Ver Receta");
 
         // Lista maestra (los índices se referencian abajo por número).
         // Formato: (id, fxml, menúPadre, textoMenuItem, tituloTab, tipo S/T)
@@ -55,8 +56,9 @@ public class MenuMenuItemDaoImp implements IMenuMenuItemDao {
         lista.add(new MenuMenuItenTO("checkin",       "/view/main_checkin.fxml",    mAtencion,  miCheckin, "Confirmar Llegada",      "T"));  // 8
         lista.add(new MenuMenuItenTO("triaje",        "/view/main_triaje.fxml",     mAtencion,  miTriaje,  "Signos Vitales",         "T"));  // 9
         lista.add(new MenuMenuItenTO("consulta",      "/view/main_consulta.fxml",   mAtencion,  miConsult, "Diagnóstico+Receta",     "T"));  // 10
-        lista.add(new MenuMenuItenTO("ticket",        "/view/main_ticket.fxml",     mAtencion,  miTicket,  "Ver/Imprimir Ticket",    "T"));  // 11
-        lista.add(new MenuMenuItenTO("reporte",       "/view/main_reporte.fxml",    mReporte,   miReporte, "Reporte de Citas",       "T"));  // 12
+        lista.add(new MenuMenuItenTO("receta",        "/view/main_receta.fxml",     mAtencion,  miReceta,  "Ver Receta",             "T"));  // 11
+        lista.add(new MenuMenuItenTO("ticket",        "/view/main_ticket.fxml",     mAtencion,  miTicket,  "Ver/Imprimir Ticket",    "T"));  // 12
+        lista.add(new MenuMenuItenTO("reporte",       "/view/main_reporte.fxml",    mReporte,   miReporte, "Reporte de Citas",       "T"));  // 13
 
         // Selección de items según el perfil. "Salir" (índice 0) siempre va al final.
         List<MenuMenuItenTO> acceso = new ArrayList<>();
@@ -64,12 +66,12 @@ public class MenuMenuItemDaoImp implements IMenuMenuItemDao {
             case "Root":
                 // Acceso total — todos los items en orden lógico.
                 acceso.addAll(Arrays.asList(
-                        lista.get(1), lista.get(2), lista.get(3),                                  // Personas
-                        lista.get(4), lista.get(5),                                                // Catálogos
-                        lista.get(6),                                                              // Seguridad
-                        lista.get(7), lista.get(8), lista.get(9), lista.get(10), lista.get(11),    // Atención
-                        lista.get(12),                                                             // Reportes
-                        lista.get(0)));                                                            // Salir
+                        lista.get(1), lista.get(2), lista.get(3),                                          // Personas
+                        lista.get(4), lista.get(5),                                                        // Catálogos
+                        lista.get(6),                                                                      // Seguridad
+                        lista.get(7), lista.get(8), lista.get(9), lista.get(10), lista.get(11), lista.get(12), // Atención
+                        lista.get(13),                                                                     // Reportes
+                        lista.get(0)));                                                                    // Salir
                 break;
             case "Administrador":
                 // Igual que Root excepto el flujo clínico día-a-día.
@@ -77,21 +79,22 @@ public class MenuMenuItemDaoImp implements IMenuMenuItemDao {
                         lista.get(1), lista.get(2), lista.get(3),  // Personas
                         lista.get(4), lista.get(5),                // Catálogos
                         lista.get(6),                              // Seguridad
-                        lista.get(12),                             // Reportes
+                        lista.get(13),                             // Reportes
                         lista.get(0)));                            // Salir
                 break;
             case "Recepcionista":
                 // Solo lo que necesita para atender en mesón.
                 acceso.addAll(Arrays.asList(
                         lista.get(1),                              // Pacientes
-                        lista.get(7), lista.get(8), lista.get(11), // Cita, Check-in, Ticket
+                        lista.get(7), lista.get(8), lista.get(12), // Cita, Check-in, Ticket
                         lista.get(0)));
                 break;
             case "Medico":
-                // Solo su consulta + reportes propios.
+                // Solo su consulta + receta + reportes propios.
                 acceso.addAll(Arrays.asList(
                         lista.get(10),                             // Consulta
-                        lista.get(12),                             // Reportes
+                        lista.get(11),                             // Receta
+                        lista.get(13),                             // Reportes
                         lista.get(0)));
                 break;
             case "Enfermero":

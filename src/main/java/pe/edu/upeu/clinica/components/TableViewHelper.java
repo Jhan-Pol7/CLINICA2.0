@@ -74,8 +74,8 @@ public class TableViewHelper<T> {
                     private final Button btnUpdate = new Button("Editar");
                     private final Button btnDelete = new Button("Eliminar");
                     {
-                        btnUpdate.getStyleClass().addAll("button", "edit-button", "table-button");
-                        btnDelete.getStyleClass().addAll("button", "delete-button", "table-button");
+                        btnUpdate.setStyle("-fx-background-color: #27AE60; -fx-text-fill: white; -fx-font-size: 11px; -fx-padding: 3 8 3 8;");
+                        btnDelete.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white; -fx-font-size: 11px; -fx-padding: 3 8 3 8;");
                         btnUpdate.setOnAction(event -> {
                             T data = getTableView().getItems().get(getIndex());
                             updateAction.accept(data);
@@ -93,7 +93,6 @@ public class TableViewHelper<T> {
                         } else {
                             HBox buttons = new HBox(btnUpdate, btnDelete);
                             buttons.setSpacing(8);
-                            buttons.getStyleClass().add("button-container");
                             setGraphic(buttons);
                         }
                     }

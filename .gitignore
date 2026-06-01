@@ -1,0 +1,27 @@
+# ── Compilados Maven ─────────────────────────────────
+target/
+*.class
+
+# ── Base de datos H2 (runtime, no va a repositorio) ──
+data/
+
+# ── IDEs ──────────────────────────────────────────────
+.idea/
+*.iml
+.vscode/
+*.code-workspace
+*.project
+*.classpath
+.settings/
+
+# ── OS ────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+nul
+
+# ── Logs ──────────────────────────────────────────────
+*.log
+logs/
+
+# ── Archivos temporales Maven ─────────────────────────
+dependency-reduced-pom.xml

@@ -56,9 +56,9 @@
 
    <HBox spacing="8.0">
       <Button onAction="#onNuevo"     text="Nuevo"/>
-      <Button onAction="#onGuardar"   styleClass="button, edit-button"   text="Guardar"/>
+      <Button onAction="#onGuardar"   style="-fx-background-color: #27AE60; -fx-text-fill: white; -fx-font-weight: bold;"   text="Guardar"/>
       <Button onAction="#onModificar" text="Modificar"/>
-      <Button onAction="#onEliminar"  styleClass="button, delete-button" text="Eliminar"/>
+      <Button onAction="#onEliminar"  style="-fx-background-color: #E74C3C; -fx-text-fill: white; -fx-font-weight: bold;" text="Eliminar"/>
       <Button onAction="#onLimpiar"   text="Limpiar"/>
    </HBox>
 

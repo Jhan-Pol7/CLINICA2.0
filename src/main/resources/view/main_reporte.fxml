@@ -56,7 +56,7 @@
    </TitledPane>
 
    <HBox spacing="8.0">
-      <Button onAction="#onGenerar"     styleClass="button, edit-button" text="Generar (visor)"/>
+      <Button onAction="#onGenerar"     style="-fx-background-color: #27AE60; -fx-text-fill: white; -fx-font-weight: bold;" text="Generar (visor)"/>
       <Button onAction="#onExportarPdf" text="Exportar PDF"/>
       <Button onAction="#onLimpiar"     text="Limpiar filtros"/>
    </HBox>
